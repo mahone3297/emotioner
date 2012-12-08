@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="My Test Suite">
+            <file>core/EmcBenchmarkTest.php</file>
+            <file>core/EmcConfigTest.php</file>
+            <file>core/EmcGlobalTest.php</file>
+            <file>core/EmcLoaderTest.php</file>
+            <file>core/EmcLogTest.php</file>
+            <file>core/EmcMysqlTest.php</file>
+            <file>core/EmcMysqliTest.php</file>
+            <file>core/EmcOutputTest.php</file>
+            <file>core/EmcUriTest.php</file>
+            
+            <file>plugin/EmpHttpTest.php</file>
+            <file>plugin/EmpCacheMemcacheTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
