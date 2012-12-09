@@ -1,126 +1,87 @@
 <?php
 
-// @date 2012-02-21
+// @date 2012-12-09
 // @author mahone
 
 class EmpHttp
 {
-    private $logger = null;
-    
-    private $ch = null;
+    const GET = 'GET';
+    const POST = 'POST';
+
     private $errno = 0;
-    private $errmsg = '';
-    private $opt = array();
-    
-    public function __construct(Array $opt=array(), $logger=null)
+    private $error = '';
+
+    public function __construct()
     {
-        $this->ch = curl_init();
-        $this->set_opt_array($opt);
-        
-        $this->logger = $logger;
     }
-    
-    public function __destruct()
+
+    // get
+    public function get(Array $urls, $options=null)
     {
-        $this->close();
+        return $this->commonHttp(self::GET, $urls, $options);
     }
-    
-    // close curl
-    public function close()
+
+    // post
+    public function post(Array $urls, $data, $options=null)
     {
-        if ($this->ch == null){
-            return ;
+        return $this->commonHttp(self::POST, $urls, $options, $data);
+    }
+
+    // @access: private
+    private function commonHttp($action, Array $urls, $options=null, $data=null)
+    {
+        if (count($urls) === 1) {
+            $ch = curl_init();
+
+            // 暂时写死
+            $opt = array(
+                CURLOPT_HEADER => false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 10,
+                CURLOPT_TIMEOUT => 180
+            );
+
+            switch ($action) {
+                case self::GET:
+                    break;
+                case self::POST:
+                    $opt[CURLOPT_POST] = true;
+                    $opt[CURLOPT_POSTFIELDS] = $data;
+                    break;
+                default:
+                    break;
+            }
+            if (isset($options) && is_array($options)) {
+                foreach ($options as $key => $val) {
+                    $opt[$key] = $val;
+                }
+            }
+            $opt[CURLOPT_URL] = $urls[0];
+            curl_setopt_array($ch, $opt);
+
+            $result = curl_exec($ch);
+            if ($result === false) {
+                $this->errno = curl_errno($ch);
+                $this->error = curl_error($ch);
+            }
+            curl_close($ch);
+
+            return $result;
+        } else {
+            // multi http 待实现
+            return false;
         }
-        
-        curl_close($this->ch);
-        $this->ch = null;
     }
-    
-    // set opt
-    public function set_opt($option, $value)
-    {
-        $this->opt[$option] = $value;
-    }
-    
-    // set opt array
-    public function set_opt_array(Array $option_arr)
-    {
-        foreach ($option_arr as $key => $val){
-            $this->opt[$key] = $val;
-        }
-    }
-    
-    // set error number
+
+    // get curl errno
     public function errno()
     {
-        if ($this->ch != null){
-            $this->errno = curl_errno($this->ch);
-        }
         return $this->errno;
     }
-    
-    // set error message
+
+    // get curl error
     public function error()
     {
-        if ($this->ch != null){
-            $this->errmsg = curl_error($this->ch);
-        }
-        return $this->errmsg;
-    }
-    
-    // get curl info
-    public function get_info($opt=null)
-    {
-        if ($opt == null){
-            return curl_getinfo(self::$ch);
-        } else {
-            return curl_getinfo(self::$ch, $opt);
-        }
-    }
-    
-    // get
-    public function get($url, $opt=null)
-    {
-        return $this->common_http('get', $url, $opt);
-    }
-    
-    // post
-    public function post($url, $data, $opt=null)
-    {
-        return $this->common_http('post', $url, $opt, $data);
-    }
-    
-    // @access: private
-    private function common_http($action, $url, $opt=null, $data=null)
-    {
-        switch ($action){
-            case 'get':
-                break;
-            case 'post':
-                $this->set_opt_array(array(
-                    CURLOPT_POST => true,
-                    CURLOPT_POSTFIELDS => $data
-                ));
-                break;
-            default:
-                break;
-        }
-        $this->set_opt(CURLOPT_URL, $url);
-        if (isset($opt)){
-            $this->set_opt_array($opt);
-        }
-        curl_setopt_array($this->ch, $this->opt);
-        
-        $rt = curl_exec($this->ch);
-        if ($rt === false){
-            $this->errno();
-            $this->error();
-            
-            if ($this->logger != null){
-                $this->logger->error('curl error: errno: '.$this->errno().', msg: '.$this->error().' url: '.$url, 'EMCHTTP');
-            }
-        }
-        
-        return $rt;
+        return $this->error;
     }
 }
