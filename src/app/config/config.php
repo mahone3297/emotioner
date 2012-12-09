@@ -8,7 +8,6 @@ $config['index_page'] = 'index.php';
 
 // database config
 $config['db_default'] = array(
-    'driver' => 'mysql',
     'master' => array(
         'host' => 'master',
         'username' => 'username',
@@ -40,7 +39,6 @@ $config['db_default'] = array(
 );
 
 $config['db_another'] = array(
-    'driver' => 'mysqli',
     'master' => array(
         'host' => 'master',
         'username' => 'username',

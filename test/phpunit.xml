@@ -7,13 +7,13 @@
             <file>core/EmcGlobalTest.php</file>
             <file>core/EmcLoaderTest.php</file>
             <file>core/EmcLogTest.php</file>
-            <file>core/EmcMysqlTest.php</file>
             <file>core/EmcMysqliTest.php</file>
             <file>core/EmcOutputTest.php</file>
             <file>core/EmcUriTest.php</file>
             
             <file>plugin/EmpHttpTest.php</file>
             <file>plugin/EmpCacheMemcacheTest.php</file>
+            <file>plugin/EmpMysqlTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

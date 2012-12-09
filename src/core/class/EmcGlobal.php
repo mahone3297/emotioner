@@ -90,20 +90,8 @@ class EmcGlobal
         
         // new db instance.
         $config = $cfg->get($key);
-        switch ($config['driver']){
-            case 'mysql':
-                self::$db = new EmcMysql($cfg->get($key), self::get_log());
-                self::$db_key = $key;
-                break;
-            case 'mysqli':
-                self::$db = new EmcMysqli($cfg->get($key), self::get_log());
-                self::$db_key = $key;
-                break;
-            default:
-                self::$db = new EmcMysql($cfg->get($key), self::get_log());
-                self::$db_key = $key;
-                break;
-        }
+        self::$db = new EmcMysqli($config, self::get_log());
+        self::$db_key = $key;
         
         return self::$db;
     }

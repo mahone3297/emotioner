@@ -18,9 +18,9 @@
 require_once __DIR__ . '/../../src/core/class/EmcConfig.php';
 require_once __DIR__ . '/../../src/core/class/EmcGlobal.php';
 require_once __DIR__ . '/../../src/core/class/EmcLog.php';
-require_once __DIR__ . '/../../src/core/class/EmcMysql.php';
+require_once __DIR__ . '/../../src/core/class/EmpMysql.php';
 
-class EmcMysqlTest extends PHPUnit_Framework_TestCase
+class EmpMysqlTest extends PHPUnit_Framework_TestCase
 {
     protected $config = array(
         'master' => array(
@@ -38,7 +38,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query('TRUNCATE TABLE user');
         
         $db->query("INSERT INTO user(username, password, age) VALUES('jacky', 'jacky123', 1)");
@@ -52,14 +52,14 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     {
         parent::tearDown();
         
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query('TRUNCATE TABLE user');
         $db->disconnect();
     }
     
     public function test_get_grid()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $rt = $db->get_grid("SELECT username, password, age FROM user");
         $this->assertEquals(array(
             array('username'=>'jacky','password'=>'jacky123','age'=>1),
@@ -75,7 +75,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_get_row()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $rt = $db->get_row("SELECT username, password, age FROM user ORDER BY id ASC");
         $this->assertEquals(array('username'=>'jacky','password'=>'jacky123','age'=>1), $rt);
         
@@ -88,7 +88,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_get_col()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $rt = $db->get_col("SELECT username, password, age FROM user ORDER BY id ASC");
         $this->assertEquals('jacky', $rt);
         
@@ -98,7 +98,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_insert()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("INSERT INTO user(username, password, age) VALUES('insert', 'insert123', 10)");
         $db->query("INSERT INTO user(username, password, age) VALUES('insert', 'insert123', 10)");
         $db->query("INSERT INTO user(username, password, age) VALUES('insert', 'insert123', 10)");
@@ -108,7 +108,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_update()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("UPDATE user SET password='123456' WHERE username='marry'");
         $rt = $db->get_row("SELECT username, password, age FROM user WHERE username='marry' ORDER BY id ASC");
         $this->assertEquals(array('username'=>'marry','password'=>'123456','age'=>5), $rt);
@@ -116,7 +116,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_delete()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("DELETE FROM user WHERE username IN ('bob', 'json', 'jacky')");
         $rt = $db->get_grid("SELECT username, password, age FROM user");
         $this->assertEquals(array(
@@ -127,7 +127,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_escape()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $str = 'uni"tt\'es"t';
         $str = $db->escape($str);
         $db->query("INSERT INTO user(username, password, age) VALUES('unittest', $str, 10)");
@@ -137,7 +137,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_autobind()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("INSERT INTO user(username, password, age) VALUES(?, ?, ?)",
             array('autobind', '123456', 10));
         $db->query("INSERT INTO user(username, password, age) VALUES(?, ?, ?)",
@@ -160,7 +160,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_insert_id()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("INSERT INTO user(username, password, age) VALUES('insert', 'insert123', 10)");
         $this->assertEquals(6, $db->insert_id());
         $db->query("INSERT INTO user(username, password, age) VALUES('insert', 'insert123', 10)");
@@ -171,7 +171,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     
     public function test_affected_rows()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("UPDATE user SET password='jacky123' WHERE username='jacky'");
         $this->assertEquals(0, $db->affected_rows());
         
@@ -185,7 +185,7 @@ class EmcMysqlTest extends PHPUnit_Framework_TestCase
     // this case, mysql.trace_mode=Off
     public function _test_error()
     {
-        $db = new EmcMysql($this->config);
+        $db = new EmpMysql($this->config);
         $db->query("INSERT INTO user(xusername, password, age) VALUES('insert', 'insert123', 10)");
         $this->assertEquals(1054, $db->errno());
         $this->assertEquals("Unknown column 'xusername' in 'field list'", $db->error());

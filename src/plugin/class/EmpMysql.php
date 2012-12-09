@@ -3,7 +3,7 @@
 // @date 2012-02-21
 // @author mahone
 
-class EmcMysql
+class EmpMysql
 {
     private $logger = null;
     

@@ -12,7 +12,6 @@ require_once __DIR__ . '/../../src/core/class/EmcGlobal.php';
 require_once __DIR__ . '/../../src/core/class/EmcInput.php';
 require_once __DIR__ . '/../../src/core/class/EmcLoader.php';
 require_once __DIR__ . '/../../src/core/class/EmcLog.php';
-require_once __DIR__ . '/../../src/core/class/EmcMysql.php';
 require_once __DIR__ . '/../../src/core/class/EmcMysqli.php';
 require_once __DIR__ . '/../../src/core/class/EmcOutput.php';
 require_once __DIR__ . '/../../src/core/class/EmcUri.php';
@@ -38,7 +37,7 @@ class EmcGlobalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $log instanceof EmcLog);
         
         $db =& EmcGlobal::get_db();
-        $this->assertEquals(true, $db instanceof EmcMysql);
+        $this->assertEquals(true, $db instanceof EmcMysqli);
         $db =& EmcGlobal::get_db('db_another');
         $this->assertEquals(true, $db instanceof EmcMysqli);
         
