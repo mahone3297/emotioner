@@ -18,7 +18,7 @@
 require_once __DIR__ . '/../../src/core/class/EmcConfig.php';
 require_once __DIR__ . '/../../src/core/class/EmcGlobal.php';
 require_once __DIR__ . '/../../src/core/class/EmcLog.php';
-require_once __DIR__ . '/../../src/core/class/EmpMysql.php';
+require_once __DIR__ . '/../../src/plugin/class/EmpMysql.php';
 
 class EmpMysqlTest extends PHPUnit_Framework_TestCase
 {
