@@ -11,8 +11,6 @@
             <file>core/EmcOutputTest.php</file>
             <file>core/EmcUriTest.php</file>
             
-            <file>plugin/EmpHttpTest.php</file>
-            <file>plugin/EmpCacheMemcacheTest.php</file>
             <file>plugin/EmpMysqlTest.php</file>
         </testsuite>
     </testsuites>
