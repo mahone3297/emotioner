@@ -1,6 +1,6 @@
 <?php
 
-// @date 2012-01-15
+// @date 2012-04-19
 // @author mahone
 
 class EmcLoader
@@ -15,6 +15,8 @@ class EmcLoader
     // @access private
     private static function spl_callback($cls_name)
     {
+        $cls_name = ucfirst($cls_name);
+        
         foreach (self::$class_path as $dir){
             $file_path = rtrim($dir, '/') . '/' . $cls_name . '.php';
             

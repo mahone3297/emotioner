@@ -1,6 +1,6 @@
 <?php  if ( ! defined('COREPATH')) exit('No direct script access allowed');
 
-// @date: 2012-01-11
+// @date: 2012-04-19
 // @author: mahone
 
 // define version
@@ -23,11 +23,12 @@ $class = ucfirst(isset($seg[0]) ? $seg[0] : EmcGlobal::get_config()->get('defaul
 $method = isset($seg[1]) ? $seg[1] : EmcGlobal::get_config()->get('default_method');
 
 try {
-    $inst = new $class();
+    em_load_controller($class);
 } catch (Exception $e){
     echo 'omg...you got the error controler...';
     return ;
 }
+$inst = new $class();
 
 if ( ! method_exists($inst, $method)){
     echo 'omg...you got the error method...';

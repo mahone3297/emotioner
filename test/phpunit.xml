@@ -10,6 +10,8 @@
             <file>core/EmcMysqliTest.php</file>
             <file>core/EmcOutputTest.php</file>
             <file>core/EmcUriTest.php</file>
+            
+            <file>plugin/EmpMysqlBuilderTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -12,6 +12,7 @@ $config['emphttp'] = array(
 );
 
 // class EmpCacheMemcache
+/*
 $config['empcachememcache'] = array(
     'servers' => array(
         array('host' => 'localhost', 'port' => 11211, 'weight' => 1)
@@ -38,3 +39,4 @@ $config['empcachememcache'] = array(
         Memcached::OPT_SERVER_FAILURE_LIMIT => 0
     )
 );
+*/

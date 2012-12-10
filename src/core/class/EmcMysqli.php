@@ -1,6 +1,6 @@
 <?php
 
-// @date 2012-02-21
+// @date 2012-04-17
 // @author mahone
 
 class EmcMysqli
@@ -252,5 +252,23 @@ class EmcMysqli
         if ($this->logger != null){
             $this->logger->error('MYSQL errno: '.$this->errno.', error: '.$this->error.', info: '.$str, 'EMCMYSQLI');
         }
+    }
+    
+    // insert
+    public function insert($table_name, $param)
+    {
+        if (empty($param)){
+            return false;
+        }
+        
+        $sql_key_array = array();
+        $sql_val_array = array();
+        foreach ($param as $key=>$val){
+            $sql_key_array[] = $key;
+            $sql_val_array[] = $this->escape($val);
+        }
+        $sql = 'INSERT INTO ' . $table_name . '(' . implode(',', $sql_key_array) . ') VALUES(' . implode(',', $sql_val_array) . ')';
+        
+        return $this->query($sql);
     }
 }

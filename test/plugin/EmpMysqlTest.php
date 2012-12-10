@@ -1,7 +1,7 @@
 <?php
 
 /*
-@date 2011-11-12
+@date 2012-04-17
 @author mahone
 @desc
     delimiter $$
@@ -189,5 +189,21 @@ class EmpMysqlTest extends PHPUnit_Framework_TestCase
         $db->query("INSERT INTO user(xusername, password, age) VALUES('insert', 'insert123', 10)");
         $this->assertEquals(1054, $db->errno());
         $this->assertEquals("Unknown column 'xusername' in 'field list'", $db->error());
+    }
+    
+    // public function insert($table_name, $param)
+    public function test_insert_function()
+    {
+        $db = new EmpMysql($this->config);
+        for ($i=0; $i<5; $i++){
+            $db->insert('user', array(
+                'username' => 'insert',
+                'password' => 'insert123',
+                'age' => 10
+            ));
+        }
+        
+        $rt = $db->get_col("SELECT COUNT(*) AS count FROM user WHERE username='insert'");
+        $this->assertEquals(5, $rt);
     }
 }

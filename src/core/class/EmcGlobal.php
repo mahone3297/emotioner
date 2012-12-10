@@ -89,8 +89,7 @@ class EmcGlobal
         }
         
         // new db instance.
-        $config = $cfg->get($key);
-        self::$db = new EmcMysqli($config, self::get_log());
+        self::$db = new EmcMysqli($cfg->get($key), self::get_log());
         self::$db_key = $key;
         
         return self::$db;

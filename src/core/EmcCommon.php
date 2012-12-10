@@ -1,6 +1,6 @@
 <?php  if ( ! defined('COREPATH')) exit('No direct script access allowed');
 
-// @date: 2012-01-06
+// @date: 2012-04-19
 // @author: mahone
 
 // em_error_handler
@@ -37,6 +37,28 @@ if ( ! function_exists('em_exception_handler')){
             require_once COREPATH . '/class/EmcGlobal.php';
         }
         EmcGlobal::get_log()->error($str, 'EM_EXCEPTION_HANDLER');
+    }
+}
+
+if ( ! function_exists('em_load_controller')){
+    function em_load_controller($cls_name)
+    {
+        $cls_name = ucfirst($cls_name);
+        
+        $dir = APPPATH.'/controller';
+        $file_path = rtrim($dir, '/') . '/' . $cls_name . '.php';
+        
+        if (file_exists($file_path)){
+            require_once($file_path);
+            
+            if ( ! class_exists($cls_name)){
+                throw new Exception('class not found: ' . $cls_name);
+            }
+            
+            return ;
+        }
+        
+        throw new Exception('file not found: ' . $cls_name . '.php');
     }
 }
 

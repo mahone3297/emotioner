@@ -26,17 +26,19 @@ class EmcUri
     // parse from url
     public function parse_from_url()
     {
+        $this->uri_string = $_SERVER['REQUEST_URI'];
+        
         $uri = $_SERVER['REQUEST_URI'];
         if (strpos($uri, $_SERVER['SCRIPT_NAME']) === 0){
-			$uri = substr($uri, strlen($_SERVER['SCRIPT_NAME']));
+			$uri = (string)substr($uri, strlen($_SERVER['SCRIPT_NAME']));
 		} else if (strpos($uri, dirname($_SERVER['SCRIPT_NAME'])) === 0){
-			$uri = substr($uri, strlen(dirname($_SERVER['SCRIPT_NAME'])));
+			$uri = (string)substr($uri, strlen(dirname($_SERVER['SCRIPT_NAME'])));
 		}
         
         // This section ensures that even on servers that require the URI to be in the query string (Nginx) a correct
 		// URI is found, and also fixes the QUERY_STRING server var and $_GET array.
 		if (strncmp($uri, '?/', 2) === 0){
-			$uri = substr($uri, 2);
+			$uri = (string)substr($uri, 2);
 		}
 		$parts = preg_split('#\?#i', $uri, 2);
 		$uri = $parts[0];
@@ -48,9 +50,9 @@ class EmcUri
 			$_GET = array();
 		}
         
-        $this->uri_string = '/' . trim(parse_url($uri, PHP_URL_PATH), '/');
-        if ($this->uri_string != '/'){
-            $this->segment = explode('/', trim($this->uri_string, '/'));
+        $uri = '/' . trim(parse_url($uri, PHP_URL_PATH), '/');
+        if ($uri != '/'){
+            $this->segment = explode('/', trim($uri, '/'));
         }
     }
     

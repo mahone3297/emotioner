@@ -1,6 +1,6 @@
 <?php
 
-// @date 2012-02-21
+// @date 2012-04-17
 // @author mahone
 
 class EmpMysql
@@ -212,7 +212,7 @@ class EmpMysql
         if (preg_match('/^(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|TRUNCATE|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)/i', $sql)){
             return true;
         }
-
+        
         return false;
     }
     
@@ -253,5 +253,23 @@ class EmpMysql
         if ($this->logger != null){
             $this->logger->error('MYSQL errno: '.$this->errno.', error: '.$this->error.', info: '.$str, 'EMCMYSQL');
         }
+    }
+    
+    // insert
+    public function insert($table_name, $param)
+    {
+        if (empty($param)){
+            return false;
+        }
+        
+        $sql_key_array = array();
+        $sql_val_array = array();
+        foreach ($param as $key=>$val){
+            $sql_key_array[] = $key;
+            $sql_val_array[] = $this->escape($val);
+        }
+        $sql = 'INSERT INTO ' . $table_name . '(' . implode(',', $sql_key_array) . ') VALUES(' . implode(',', $sql_val_array) . ')';
+        
+        return $this->query($sql);
     }
 }
